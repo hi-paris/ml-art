@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
+from torchsummary import summary
 
 class Bottleneck(nn.Module):
     expansion = 4
@@ -54,9 +54,10 @@ class ResNet(nn.Module):
         self.layer2 = self._make_layer(ResBlock, layer_list[1], planes=128, stride=2)
         self.layer3 = self._make_layer(ResBlock, layer_list[2], planes=256, stride=2)
         self.layer4 = self._make_layer(ResBlock, layer_list[3], planes=512, stride=2)
-        
+        self.layer5 = self._make_layer(ResBlock, layer_list[4], planes=1024, stride=2)
+
         self.avgpool = nn.AdaptiveAvgPool2d((1,1))
-        self.fc1 = nn.Linear(512*ResBlock.expansion, 4096)
+        # self.fc1 = nn.Linear(512*ResBlock.expansion, 4096)
         self.fc2 = nn.Linear(4096, num_classes)
 
         
@@ -68,13 +69,14 @@ class ResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        
+        x = self.layer5(x)
         x = self.avgpool(x)
         x = x.reshape(x.shape[0], -1)
-        x = self.fc1(x)
+        # x = self.fc1(x)
+        x = self.fc2(x)
+
         x=self.relu(x)
 
-        x = self.fc2(x)
 
 
         return x
@@ -98,10 +100,19 @@ class ResNet(nn.Module):
         return nn.Sequential(*layers)     
         
 def ResNet50(num_classes, channels=3):
-    return ResNet(Bottleneck, [3,4,6,3], num_classes, channels)
+    return ResNet(Bottleneck, [3,4,6,3,1], num_classes, channels)
     
-def ResNet101(num_classes, channels=3):
-    return ResNet(Bottleneck, [3,4,23,3], num_classes, channels)
+# def ResNet101(num_classes, channels=3):
+#     return ResNet(Bottleneck, [3,4,23,3], num_classes, channels)
 
-def ResNet152(num_classes, channels=3):
-    return ResNet(Bottleneck, [3,8,36,3], num_classes, channels)
+# def ResNet152(num_classes, channels=3):
+#     return ResNet(Bottleneck, [3,8,36,3], num_classes, channels)
+
+
+
+# input=torch.rand((1,3,224,224))
+# model=ResNet50(1, channels=3)
+# out=model(input)
+# print(model)
+
+# summary(model.cuda(), (3, 224, 224))
