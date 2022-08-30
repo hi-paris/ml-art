@@ -15,7 +15,7 @@ The resulted volumes after each convolution operations ... :
 
 Loss                    |  Accuracy
 :----------------------:|:-------------------------:
-<img src="/home/infres/ext-6343/venv_ml_art/ml-art/imgs/resnet_loss.png" width="425"/> | <img src="/home/infres/ext-6343/venv_ml_art/ml-art/imgs/resnet_accuracy.png" width="425"/> 
+<img src="imgs/resnet_loss.png" width="425"/> | <img src="imgs/resnet_accuracy.png" width="425"/> 
 
 
 ## Autoencoder
@@ -32,7 +32,7 @@ Loss                    |  Accuracy
 
  ...
  
-<img src="/home/infres/ext-6343/venv_ml_art/ml-art/imgs/ae_loss.png" width="425"/> 
+<img src="imgs/ae_loss.png" width="425"/> 
 
 
 # License
