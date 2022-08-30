@@ -27,15 +27,15 @@ parser = argparse.ArgumentParser(description='')
 # 1279
 # "cuda:0" if torch.cuda.is_available() else
 
-parser.add_argument('--epochs', dest='epochs', type=int, default=32, help='# of epoch')
+parser.add_argument('--epochs', dest='epochs', type=int, default=240, help='# of epoch')
 parser.add_argument('--num_classes', dest='num_classes', type=int, default=1, help='# of epoch')
 
-parser.add_argument('--device', dest='device', type=str, default=torch.device("cuda" if torch.cuda.is_available() else "cpu"), help='device')
-
-parser.add_argument('--lr', dest='lr', type=float, default=0.001, help='lr')
+parser.add_argument('--device', dest='device', type=str, default=torch.device("cuda:1" if torch.cuda.is_available() else "cpu"), help='device')
+ 
+parser.add_argument('--lr', dest='lr', type=float, default=0.0001, help='lr')
 parser.add_argument('--weight_decay', dest='weight_decay', type=float, default=0.1, help='lr')
 
-parser.add_argument('--model_name', dest='model_name', type=str, default="autoencoder_early_stopping", help='')
+parser.add_argument('--model_name', dest='model_name', type=str, default="autoencoder_", help='')
 parser.add_argument('--optim_name', dest='optim_name', type=str, default="adam", help='')
 parser.add_argument('--loss_name', dest='loss_name', type=str, default="mse", help='')
 
@@ -106,14 +106,6 @@ class Dataset(torch.utils.data.Dataset):
     def __len__(self):
         return self.len
 
-    # def __iter__(self):
-    #      # yield only valid data, skip Nones
-
-    #     img, target = read_img_and_target(d)
-    #     if filter_cond(img, target):
-    #         yield img, target
-
-
     def __getitem__(self, index):
         path = self.paths[index]
         image = Image.open(path).convert('RGB')
@@ -137,14 +129,8 @@ model=AE(base_channel_size=64,latent_dim=4096)
 model.to(args.device)
 
 loss_function = torch.nn.MSELoss().to(args.device)
-optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.1)
+# optimizer = torch.optim.SGD(model.parameters(), lr=args.lr, momentum=0.1)
 optimizer = torch.optim.Adam(model.parameters(), lr= args.lr)
-
-# # scheduler = StepLR(optimizer, step_size=1, gamma=0.1)
-
-# # def accuracy(pred, label):
-# #     _, out = torch.max(pred, dim=1)
-# #     return torch.tensor(torch.sum(out == label).item()/len(pred))
 
 def train_(trainDataLoader):
 
@@ -198,9 +184,9 @@ if __name__ == '__main__':
             f"Train loss: {train_loss/len(trainDataLoader):.3f}.. "
             f"Test loss: {val_loss/len(valDataLoader):.3f}.. "    
             )
-        save_model(model,destination_folder_saved+"/model_"+str(epoch)+".pth")
 
 
 # save th eresults and plot the learning curve
 save_results_ae(saved_values,json_path,train_losses,test_losses)
 plot_curve(train_losses,test_losses,destination_folder_plots+"/loss.png","loss")
+save_model(model,destination_folder_saved+"/model.pth")

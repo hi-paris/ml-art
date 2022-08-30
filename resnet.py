@@ -24,14 +24,14 @@ parser = argparse.ArgumentParser(description='')
 # 1279
 # "cuda:0" if torch.cuda.is_available() else
 
-parser.add_argument('--epochs', dest='epochs', type=int, default=1, help='# of epoch')
+parser.add_argument('--epochs', dest='epochs', type=int, default=180, help='# of epoch')
 parser.add_argument('--num_classes', dest='num_classes', type=int, default=1, help='')
 
-parser.add_argument('--device', dest='device', type=str, default=torch.device("cuda" if torch.cuda.is_available() else "cpu"), help='device')
+parser.add_argument('--device', dest='device', type=str, default=torch.device("cuda:0" if torch.cuda.is_available() else "cpu"), help='device')
 
 parser.add_argument('--lr', dest='lr', type=float, default=0.001, help='lr')
 
-parser.add_argument('--model_name', dest='model_name', type=str, default="TODELETE_resnet50", help='')
+parser.add_argument('--model_name', dest='model_name', type=str, default="new_resnet50", help='')
 parser.add_argument('--optim_name', dest='optim_name', type=str, default="sgd", help='')
 parser.add_argument('--loss_name', dest='loss_name', type=str, default="bce", help='')
 
@@ -80,7 +80,7 @@ if args.fine_tuning:
 
 else:
     model=ResNet50(args.num_classes)
-    # summary(model,(3,224,224))
+    summary(model,(3,224,224))
 
 transform = transforms.Compose([
                                 transforms.Resize(255),

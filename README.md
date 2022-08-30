@@ -1,13 +1,17 @@
 # ml-art
 
-This repository contains code to extract a 4096 dimensional representation of art images using two different architectures.
+This repository contains code to extract a 4096 dimensional representation of art images using two different architectures...
 
 ## ResnNet-50
 
 **Architecture**
+Here is the modified ResNet-50 architecture ...:
+<img src="./imgs/resnet.svg">
+
+The resulted volumes after each convolution operations ... :
+<img src="./imgs/resnet_volumes.svg">
 
 **Results**
-
 
 Loss                    |  Accuracy
 :----------------------:|:-------------------------:
@@ -16,9 +20,17 @@ Loss                    |  Accuracy
 
 ## Autoencoder
 
+...
+
 **Architecture**
 
+...
+
+<img src="./imgs/ae_volumes.svg">
+
 **Results**
+
+ ...
  
 <img src="imgs/ae_loss.png" width="425"/> 
 

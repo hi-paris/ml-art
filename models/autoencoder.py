@@ -3,6 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.data as data
 import torch.optim as optim
+from torchsummary import summary
 
 
 class Encoder(nn.Module):
@@ -114,5 +115,3 @@ class AE(torch.nn.Module):
         z = self.encoder(x)
         x_hat = self.decoder(z)
         return x_hat
-
-
